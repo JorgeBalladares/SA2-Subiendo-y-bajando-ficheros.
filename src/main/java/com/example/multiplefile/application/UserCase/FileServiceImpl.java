@@ -4,18 +4,23 @@ import com.example.multiplefile.application.Service.FileServiceAPI;
 import com.example.multiplefile.domain.File;
 import com.example.multiplefile.infraestructure.Repository.FileRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
+import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +28,16 @@ public class FileServiceImpl implements FileServiceAPI {
 
     private final Path rootFolder = Paths.get("uploads");
     private final FileRepository fileRepository;
+    private final ModelMapper modelMapper;
 
+
+    //------------Save file in local path
     @Override
     public void save(MultipartFile file) throws Exception {
-
+        //---A type of method which we can add files in a local path
         Files.copy(file.getInputStream(), this.rootFolder.resolve(Objects.requireNonNull(file.getOriginalFilename())));
 
     }
-
-    @Override
-    public Resource load(String name) {
-        return null;
-    }
-
     @Override
     public void save(List<MultipartFile> files) throws Exception {
         for (MultipartFile file : files){
@@ -43,16 +45,11 @@ public class FileServiceImpl implements FileServiceAPI {
         }
     }
 
-    @Override
-    public Stream<Path> loadAll() {
-        return null;
-    }
 
-
-    //------------------------Using thymeleaf
-
+    //------------Save file in local path
     @Override
     public void uploadToLocal(MultipartFile multipartFile){
+        //---Another method to add a file in local path
         try {
             byte[] data = multipartFile.getBytes();
             String uploadFolderPath = "C:\\Users\\jorge.balladares\\Desktop\\multiplefile\\uploads";
@@ -62,7 +59,15 @@ public class FileServiceImpl implements FileServiceAPI {
             ex.printStackTrace();
         }
     }
+    @Override
+    public void uploadToLocal(List<MultipartFile> files) throws Exception {
+        for (MultipartFile file : files){
+            this.save(file);
+        }
+    }
 
+
+    //---------------Upload a file in a Database
     @Override
     public File uploadToDB(MultipartFile file1) {
         File file = new File();
@@ -78,6 +83,20 @@ public class FileServiceImpl implements FileServiceAPI {
             return null;
         }
     }
+
+
+    //---Download files from Database
+    public File downloadFile (String fileId) throws NoSuchFileException {
+        Optional<File> file = fileRepository.findById(fileId);
+        return modelMapper.map(file, File.class);
+
+    }
+
+
+
+
+
+
 
 
 }
