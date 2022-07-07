@@ -17,6 +17,6 @@ public interface FileServiceAPI {
     public void uploadToLocal(MultipartFile multipartFile);
     public void uploadToLocal(List<MultipartFile> files) throws Exception;
     public File uploadToDB(MultipartFile multipartFile);
-    public File downloadFile (String fileId) throws NoSuchFileException;
+    public File downloadFile (String fileId);
 
 }

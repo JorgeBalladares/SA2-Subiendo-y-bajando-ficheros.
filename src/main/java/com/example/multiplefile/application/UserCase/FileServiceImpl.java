@@ -86,7 +86,7 @@ public class FileServiceImpl implements FileServiceAPI {
 
 
     //---Download files from Database
-    public File downloadFile (String fileId) throws NoSuchFileException {
+    public File downloadFile (String fileId) {
         Optional<File> file = fileRepository.findById(fileId);
         return modelMapper.map(file, File.class);
 

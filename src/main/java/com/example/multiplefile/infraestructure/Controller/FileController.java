@@ -48,8 +48,14 @@ public class FileController {
 
 
     @PostMapping ("/upload/db")
-    public File uploadDb (@RequestParam("files") MultipartFile multipartFile) {
-        return fileServiceAPI.uploadToDB(multipartFile);
+    public ResponseEntity<String> uploadDb (@RequestParam("files") MultipartFile multipartFile) {
+        if(!multipartFile.isEmpty()){
+            File file = fileServiceAPI.uploadToDB(multipartFile);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Successfully uploads");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Fail to upload file, it's empty or missed");
+        }
     }
 
     @GetMapping ("/get/file/{fileId}")
@@ -64,7 +70,7 @@ public class FileController {
     }
 
     @GetMapping ("/download/file/{fileId}")
-    public ResponseEntity<Object> downloadFile (@PathVariable ("fileId") String fileId) throws NoSuchFileException {
+    public ResponseEntity<Object> downloadFile (@PathVariable ("fileId") String fileId)  {
         File file =  fileServiceAPI.downloadFile(fileId);
         if (file!=null){
             return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getFileType()))
