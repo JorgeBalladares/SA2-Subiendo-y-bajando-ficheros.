@@ -24,7 +24,7 @@ public class FileController {
     private FileServiceAPI fileServiceAPI;
 
 
-    @PostMapping("/upload")
+    @PostMapping("/uploading")
     public ResponseEntity<String> uploadFiles (@RequestParam ("files") List<MultipartFile> files)  {
         try{
             fileServiceAPI.save(files);

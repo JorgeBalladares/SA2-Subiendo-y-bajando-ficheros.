@@ -3,8 +3,10 @@ package com.example.multiplefile.application.Service;
 import com.example.multiplefile.domain.File;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
@@ -18,5 +20,6 @@ public interface FileServiceAPI {
     public void uploadToLocal(List<MultipartFile> files) throws Exception;
     public File uploadToDB(MultipartFile multipartFile);
     public File downloadFile (String fileId);
+
 
 }

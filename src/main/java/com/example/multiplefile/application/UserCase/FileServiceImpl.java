@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
@@ -52,7 +54,7 @@ public class FileServiceImpl implements FileServiceAPI {
         //---Another method to add a file in local path
         try {
             byte[] data = multipartFile.getBytes();
-            String uploadFolderPath = "C:\\Users\\jorge.balladares\\Desktop\\multiplefile\\uploads";
+            String uploadFolderPath = "C:\\Users\\jorge.balladares\\Desktop\\multiplefile\\chargeFiles";
             Path path = Paths.get(uploadFolderPath, multipartFile.getOriginalFilename());
             Files.write(path, data );
         } catch (IOException ex){
@@ -93,6 +95,8 @@ public class FileServiceImpl implements FileServiceAPI {
     }
 
 
+
+    //---------load with views html
 
 
 
